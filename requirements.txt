@@ -1,0 +1,13 @@
+# Core dependencies
+opencv-python-headless>=4.10
+numpy>=1.26
+pytesseract>=0.3
+tqdm>=4.66
+beautifulsoup4>=4.12
+requests>=2.32
+PyYAML>=6.0
+scikit-image>=0.23
+
+# Optional: Google Cloud extras
+google-cloud-vision>=3.7
+google-cloud-language>=2.12
