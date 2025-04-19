@@ -1,0 +1,91 @@
+# === Paths ===
+credentials_path: "E:/Newspaper OCR V3/Cloud Vision/gcpvisionkey.json"
+base_dir: "E:/Newspaper OCR V3/downloads/batch_nbu_plattsmouth01_ver01"  # Input Directory
+output_dir: "E:/Newspaper OCR V3/Processed OCR Text"  # Output Directory
+problem_images_dir: "E:/Newspaper OCR V3/processed_images/problem_images" # Where do you want the problem images to go?
+processed_images_dir: "E:/Newspaper OCR V3/processed_images" # Where do you want the processed images to go?
+
+# === Batch & retry settings ===
+batch_size: 4
+api_rate_limit_delay: 0.2
+max_retries: 5
+retry_base_delay: 2
+
+# === File discovery filtering ===
+file_discovery:
+  exclude_extensions:  # Completely ignore these file types during scanning
+    - ".png"
+    - ".json"
+    - ".txt"
+    - ".zip"
+  useless_dir_patterns:  # Skip folders matching these patterns
+    - "*_debug"
+    - "*_processed"
+    - "*_output"
+    - "*/temp/*"
+
+  metadata_file_patterns: []  # No metadata patterns for now
+
+  # Early filtering based on image properties - Consider disabling for thorough testing initially
+  image_filtering:
+    enable: false  # Set to false initially for testing purposes
+    min_file_size_kb: 10  # Skip tiny files that can't contain useful content
+    max_file_size_mb: 100  # Skip extremely large files that might crash processing
+    check_entropy: false  # Disable entropy check initially
+    min_entropy: 4.0  # Minimum Shannon entropy to consider an image non-blank
+    entropy_sample_size: 1000  # Number of pixels to sample for entropy calculation
+
+# === Feature toggles ===
+enable_deskewing: true  # Global toggle for deskewing step
+enable_ner: false  # NER is permanently disabled in the code
+min_confidence: 0.50
+zip_debug_images: true  # Compress images?
+enable_clahe: true  # Global toggle for CLAHE step
+
+# === Supported file types ===
+supported_extensions:
+  - ".jp2"
+
+# === Preprocessing Parameters ===
+# Note: These are general settings. Specific block types might override later.
+preprocessing_params:
+  clahe_clip_limit: 3.0  # Renamed from clahe_clip
+  clahe_tile_grid_size: [8, 8]  # Renamed from clahe_grid
+
+  # === Noise Reduction ===
+  noise_reduction:
+    # Choose ONE method. Set the other's parameter to null to disable.
+    median_blur_ksize: 3  # e.g., 3, 5. Must be odd and > 1. Set to null to disable.
+    gaussian_blur_kernel: null  # e.g., [5, 5]. Must be odd and > 0. Set to null to disable.
+
+  adaptive_thresholding:  # Used if binarization_method is 'adaptive'
+    method: gaussian  # "mean" or "gaussian"
+    block_size: 15  # Must be odd and > 1
+    C: 2  # Constant subtracted from the mean or weighted mean
+
+  # === Morphological Cleaning ===
+  morphological_cleaning:
+    enable: true  # Toggle morphological cleaning on/off
+    kernel_size: [2, 2]  # Kernel size for both closing and opening - Use same kernel for both
+    apply_closing: true  # Apply morphological closing
+    apply_opening: true  # Apply morphological opening
+
+  # === Deskew Parameters ===
+  deskew:
+    # This section controls deskew parameters if enable_deskewing (global toggle) is true
+    enable: true  # Specific toggle for deskew within preprocessing params
+    skew_threshold: 0.5  # Minimum detected skew angle to apply correction
+    max_skew_angle: 15.0  # Maximum angle to correct
+
+# === Binarization ===
+binarization_method: adaptive  # Options: "adaptive", "sauvola", "otsu"
+
+# Parameters for Sauvola (if binarization_method is 'sauvola')
+sauvola_window: 25
+sauvola_k: 0.3
+
+# === OCR ===
+tesseract_config: "--oem 1 --psm 6 --dpi 300"  # Tesseract engine parameters
+
+# === Logging ===
+log_level: DEBUG  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
