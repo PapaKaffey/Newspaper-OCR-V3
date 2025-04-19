@@ -57,13 +57,13 @@ python scripts/download_jp2.py downloads https://nebnewspapers.unl.edu/data/batc
 ### 2. Run OCR on downloaded scans
 
 ```bash
-python scripts/run_ocr.py downloads output --config config.yml
+python scripts/run_ocr.py downloads output --config Scripts/config_enhanced.yml
 ```
 
 ### Or run the enhanced GPU-aware pipeline
 
 ```bash
-python Scripts/newspaper_ocr_gpu.py --config config_enhanced.yml
+python Scripts/newspaper_ocr_gpu.py --config Scripts/config_enhanced.yml
 ```
 
 ---
@@ -81,7 +81,7 @@ Each processed page generates:
 
 ## ⚙️ Configuration
 
-Edit `config.yml` or `config_enhanced.yml` to adjust:
+Edit `Scripts/config_enhanced.yml` to adjust:
 
 - Input/output paths
 - OCR backends and retry behavior
