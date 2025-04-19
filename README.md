@@ -1,86 +1,106 @@
-# Newspaper-OCR-V3
+# 📰 Newspaper-OCR-V3
 
-Modern, GPU‑aware OCR pipeline for historical newspaper scans (JP2, TIFF, PNG). Built for archival batches from [Chronicling America](https://chroniclingamerica.loc.gov/) and [Open ONI](https://open-oni.github.io/), but usable with any structured directory of newspaper images.
+A modern OCR pipeline for historical newspaper scans with GPU acceleration, smart preprocessing, and flexible backends. Designed for use with collections like [Chronicling America](https://chroniclingamerica.loc.gov/) and [Open ONI](https://open-oni.github.io/), but adaptable to any scanned newspaper dataset.
+
+---
 
 ## ✅ Features
 
-- 🧠 Smart preprocessing with block detection, deskewing, contrast enhancement
-- ⚡ GPU-accelerated filters (OpenCV CUDA) when available
-- 🧾 Google Cloud Vision API integration (fallbacks to Tesseract)
-- 📑 Named Entity Recognition (optional via Google NLP)
-- 📁 Recursive batch downloading from OpenONI-style directories
-- 🧪 YAML-configurable processing settings
+- 🧠 Intelligent preprocessing: deskewing, CLAHE, Sauvola binarization
+- ⚡ GPU acceleration with OpenCV CUDA (auto fallback to CPU)
+- 🧾 Google Cloud Vision OCR (fallbacks to Tesseract if needed)
+- 🧠 Optional Named Entity Recognition (NER) with Google Cloud NLP
+- 📂 Recursive scan discovery and batch processing
+- 🔄 Skips previously processed files for efficiency
+- ⚙️ Fully YAML-configurable pipeline behavior
 
 ---
 
 ## 📦 Installation
 
 ```bash
-# clone the repo
+# Clone the repository
 $ git clone https://github.com/PapaKaffey/Newspaper-OCR-V3.git
 $ cd Newspaper-OCR-V3
 
-# set up Python env
-$ python -m venv .venv
-$ source .venv/bin/activate        # Windows: .venv\Scripts\activate
+# Create and activate a virtual environment
+$ python -m venv venv
+# On Windows
+$ venv\Scripts\activate
+# On macOS/Linux
+$ source venv/bin/activate
 
-# install dependencies
+# Install dependencies
 $ pip install -r requirements.txt
 ```
 
-If you're using Google Cloud Vision/NLP, ensure your `GOOGLE_APPLICATION_CREDENTIALS` env variable is set, or update `configs/default.yml` with your credentials path.
+If using Google Cloud APIs, set your credentials path:
+
+```bash
+# Windows
+set GOOGLE_APPLICATION_CREDENTIALS=path\to\gcp_key.json
+
+# macOS/Linux
+export GOOGLE_APPLICATION_CREDENTIALS=path/to/gcp_key.json
+```
 
 ---
 
 ## 🚀 Quickstart
 
-### 1. Download a batch of JP2s
+### 1. Download JP2 images from an ONI-style batch
 
 ```bash
-python scripts/download_jp2.py downloads \
-  https://nebnewspapers.unl.edu/data/batches/batch_nbu_plattsmouth01_ver01/
+python scripts/download_jp2.py downloads https://nebnewspapers.unl.edu/data/batches/batch_nbu_plattsmouth01_ver01/
 ```
 
-### 2. Run OCR on the downloaded scans
+### 2. Run OCR on downloaded scans
 
 ```bash
-python scripts/run_ocr.py downloads ocr_output \
-  --config configs/default.yml
+python scripts/run_ocr.py downloads output --config config.yml
+```
+
+### Or run the enhanced GPU-aware pipeline
+
+```bash
+python Scripts/newspaper_ocr_gpu.py --config config_enhanced.yml
 ```
 
 ---
 
-## 📂 Output
+## 📂 Output Files
 
-Each processed page produces:
+Each processed page generates:
 
-- `ocr_output/{filename}.txt` — OCR’d text
-- `ocr_output/{filename}_entities.json` — named entities (optional)
-- `ocr_output/debug/` — debug images of processed blocks
-
----
-
-## 🔧 Configuration
-
-Edit `configs/default.yml` to change:
-
-- batch size
-- deskew thresholds
-- binarization window
-- block filtering heuristics
-- confidence thresholds
+- `output/{filename}.txt` — OCR text
+- `output/{filename}_meta.json` — Metadata (date, paper, issue, etc.)
+- `output/{filename}_entities.json` — Named entities (if enabled)
+- `output/{filename}_debug/` — Preprocessed block images
 
 ---
 
-## 🔜 Coming Soon
+## ⚙️ Configuration
 
-- Block-level classification (headlines, ads, body)
-- Better confidence scoring
-- CLI packaging via `setuptools`
+Edit `config.yml` or `config_enhanced.yml` to adjust:
+
+- Input/output paths
+- OCR backends and retry behavior
+- Deskewing and binarization options
+- Metadata regex patterns
+- Block classification thresholds
+
+---
+
+## 🛠 Coming Soon
+
+- PDF output with selectable OCR layers
+- Web UI for visual review of OCR quality
+- LLM-enhanced summarization (Ollama integration)
+- Block-level visual classification
 
 ---
 
 ## 📄 License
 
-MIT — © 2025 [PapaKaffey](https://github.com/PapaKaffey)
-
+MIT License  
+© 2025 [PapaKaffey](https://github.com/PapaKaffey)

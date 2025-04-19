@@ -1,0 +1,87 @@
+# === Google Cloud & OCR Credentials ===
+credentials_path: "path/to/your/gcp-key.json"
+
+# === Directories ===
+base_dir: "path/to/your/input/directory"
+output_dir: "path/to/your/output/directory"
+problem_images_dir: "path/to/save/problematic/images"
+processed_images_dir: "path/to/previously/processed/outputs"  # Optional, used to skip
+
+# === Batch & Retry Settings ===
+batch_size: 4
+max_retries: 5
+api_rate_limit_delay: 0.2
+retry_base_delay: 2
+
+# === Preprocessing Options ===
+enable_deskewing: true
+enable_ner: true
+min_confidence: 0.50
+
+# === Metadata File Patterns to Skip (Optional) ===
+metadata_file_patterns:
+  - "0000.jp2"
+  - "0001.jp2"
+  - "0002.jp2"
+
+# === Block Classification Thresholds ===
+min_headline_area: 1000
+max_headline_area: 50000
+min_body_area: 5000
+min_ad_area: 2000
+min_text_density: 0.05
+max_text_density: 0.5
+overlap_threshold: 0.25
+
+# === Deskew Settings ===
+skew_threshold: 0.5
+max_skew_angle: 15.0
+
+# === Supported File Extensions ===
+supported_extensions:
+  - ".jp2"
+  - ".tif"
+  - ".tiff"
+  - ".png"
+
+# === Preprocessing Parameters by Block Type ===
+preprocessing_params:
+  headline:
+    sauvola_window: 25
+    sauvola_k: 0.3
+    blur: false
+    closing: false
+    clahe: true
+    clahe_clip: 2.0
+    clahe_grid: [8, 8]
+  body:
+    sauvola_window: 35
+    sauvola_k: 0.2
+    blur: true
+    blur_kernel: [3, 3]
+    closing: false
+    clahe: true
+    clahe_clip: 1.5
+    clahe_grid: [8, 8]
+  advertisement:
+    sauvola_window: 45
+    sauvola_k: 0.25
+    blur: true
+    blur_kernel: [3, 3]
+    closing: true
+    closing_kernel_size: [2, 2]
+  default:
+    sauvola_window: 35
+    sauvola_k: 0.2
+    blur: false
+    closing: false
+    clahe: true
+    clahe_clip: 2.0
+    clahe_grid: [8, 8]
+
+# === Metadata Extraction Patterns ===
+metadata_patterns:
+  date: "(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{1,2},\\s+\\d{4}"
+  newspaper_name: "(?:[A-Z][A-Za-z]+\\s+){1,3}(?:Times|Herald|Tribune|Journal|Gazette|Chronicle|News|Post|Courier|Express|Star|Press|Record|Observer)"
+  volume: "(?:Vol(?:ume)?\\.?\\s*)(\\d+)"
+  issue: "(?:No\\.?\\s*)(\\d+)"
