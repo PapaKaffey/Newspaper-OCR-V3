@@ -1,18 +1,20 @@
 # 📰 Newspaper-OCR-V3
+[![OCR Version](https://img.shields.io/badge/OCR-v2.0--vision--primary-blue?style=flat-square)](https://github.com/PapaKaffey/Newspaper-OCR-V3/releases/tag/v2.0-vision-primary)
 
-A modern OCR pipeline for historical newspaper scans with GPU acceleration, smart preprocessing, and flexible backends. Designed for use with collections like [Chronicling America](https://chroniclingamerica.loc.gov/) and [Open ONI](https://open-oni.github.io/), but adaptable to any scanned newspaper dataset.
+An optimized OCR pipeline for historical newspapers using Google Vision API and fallback logic.  
+Designed for use with collections like **Chronicling America** and **Open ONI**, but adaptable to any scanned newspaper dataset.
 
 ---
 
 ## ✅ Features
 
-- 🧠 Intelligent preprocessing: deskewing, CLAHE, Sauvola binarization
-- ⚡ GPU acceleration with OpenCV CUDA (auto fallback to CPU)
-- 🧾 Google Cloud Vision OCR (fallbacks to Tesseract if needed)
-- 🧠 Optional Named Entity Recognition (NER) with Google Cloud NLP
-- 📂 Recursive scan discovery and batch processing
-- 🔄 Skips previously processed files for efficiency
-- ⚙️ Fully YAML-configurable pipeline behavior
+- 🧠 Intelligent preprocessing: deskewing, CLAHE, Sauvola binarization  
+- ⚡ GPU acceleration with OpenCV CUDA (auto fallback to CPU)  
+- 🧾 Google Cloud Vision OCR (fallback to Tesseract if needed)  
+- 🧠 Optional Named Entity Recognition (NER) with Google Cloud NLP  
+- 📂 Recursive scan discovery and batch processing  
+- 🔄 Skips previously processed files for efficiency  
+- ⚙️ Fully YAML-configurable pipeline behavior  
 
 ---
 
@@ -20,21 +22,23 @@ A modern OCR pipeline for historical newspaper scans with GPU acceleration, smar
 
 ```bash
 # Clone the repository
-$ git clone https://github.com/PapaKaffey/Newspaper-OCR-V3.git
-$ cd Newspaper-OCR-V3
+git clone https://github.com/PapaKaffey/Newspaper-OCR-V3.git
+cd Newspaper-OCR-V3
 
 # Create and activate a virtual environment
-$ python -m venv venv
+python -m venv venv
+
 # On Windows
-$ venv\Scripts\activate
+venv\Scripts\activate
+
 # On macOS/Linux
-$ source venv/bin/activate
+source venv/bin/activate
 
 # Install dependencies
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
-If using Google Cloud APIs, set your credentials path:
+If using Google Cloud APIs, set your credentials:
 
 ```bash
 # Windows
@@ -48,7 +52,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=path/to/gcp_key.json
 
 ## 🚀 Quickstart
 
-### 1. Download JP2 images from an ONI-style batch
+### 1. Download JP2 images from ONI-style batch
 
 ```bash
 python scripts/download_jp2.py downloads https://nebnewspapers.unl.edu/data/batches/batch_nbu_plattsmouth01_ver01/
@@ -57,13 +61,13 @@ python scripts/download_jp2.py downloads https://nebnewspapers.unl.edu/data/batc
 ### 2. Run OCR on downloaded scans
 
 ```bash
-python scripts/run_ocr.py downloads output --config Scripts/config_enhanced.yml
+python scripts/run_ocr.py downloads output --config scripts/config_enhanced.yml
 ```
 
-### Or run the enhanced GPU-aware pipeline
+### OR use the enhanced GPU-aware pipeline
 
 ```bash
-python Scripts/newspaper_ocr_gpu.py --config Scripts/config_enhanced.yml
+python scripts/newspaper_ocr_gpu.py --config scripts/config_enhanced.yml
 ```
 
 ---
@@ -72,31 +76,32 @@ python Scripts/newspaper_ocr_gpu.py --config Scripts/config_enhanced.yml
 
 Each processed page generates:
 
-- `output/{filename}.txt` — OCR text
-- `output/{filename}_meta.json` — Metadata (date, paper, issue, etc.)
-- `output/{filename}_entities.json` — Named entities (if enabled)
-- `output/{filename}_debug/` — Preprocessed block images
+- `output/{filename}.txt` — OCR text  
+- `output/{filename}_meta.json` — Metadata (engine used, OCR confidence, fallback logic)  
+- `output/{filename}_entities.json` — Named entities (if NER enabled)  
+- `output/{filename}_debug/` — Preprocessed images (CLAHE, binarized, deskewed) — zipped if enabled  
 
 ---
 
 ## ⚙️ Configuration
 
-Edit `Scripts/config_enhanced.yml` to adjust:
+Edit `scripts/config_enhanced.yml` to control:
 
-- Input/output paths
-- OCR backends and retry behavior
-- Deskewing and binarization options
-- Metadata regex patterns
-- Block classification thresholds
+- Input/output paths  
+- OCR backend & retry behavior  
+- Deskewing and binarization  
+- Metadata regex extraction  
+- Morphology and CLAHE settings  
+- Block classification thresholds  
 
 ---
 
 ## 🛠 Coming Soon
 
-- PDF output with selectable OCR layers
-- Web UI for visual review of OCR quality
-- LLM-enhanced summarization (Ollama integration)
-- Block-level visual classification
+- 📄 PDF output with selectable OCR layers  
+- 🌐 Web UI for reviewing OCR quality  
+- 🤖 LLM-enhanced summarization (Ollama/LLAMA.cpp)  
+- 🧠 Block-level visual classification  
 
 ---
 
@@ -104,3 +109,4 @@ Edit `Scripts/config_enhanced.yml` to adjust:
 
 MIT License  
 © 2025 [PapaKaffey](https://github.com/PapaKaffey)
+```
