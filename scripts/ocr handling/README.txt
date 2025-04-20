@@ -1,61 +1,92 @@
-# Newspaper OCR Processing Scripts
+## 📜 Scripts Overview
 
-This directory contains the OCR (Optical Character Recognition) processing scripts used in the Newspaper-OCR-V3 project.
+### 🗂️ JP2 Downloader  
+**File:** `newspaper_ocr_download_jp2.py`  
+Downloads JP2/TIFF image files from newspaper archives.
 
-## Scripts Overview
-
-### JP2 Downloader
-`newspaper_ocr_download_jp2.py` - Downloads JP2/TIFF image files from newspaper archives.
-
-```
-python scripts/newspaper_ocr_download_jp2.py ./downloads https://example.com/batch/url/
+```bash
+python scripts/ocr handling/newspaper_ocr_download_jp2.py ./downloads https://example.com/batch/url/
 ```
 
-Features:
+✅ Features:
 - Multi-threaded downloading for efficient retrieval
 - Automatic directory traversal and JP2 file discovery
 - Resume capability for interrupted downloads
 - Progress tracking with detailed logging
 
-### OCR Processing 
-`ocr_pipeline.py` - Processes downloaded JP2 files using Google Cloud Vision API and Tesseract.
+---
 
-```
-python scripts/ocr/ocr_pipeline.py --config config.yml
-```
+### 🧠 OCR Processing  
+**File:** `newspaper_ocr_run.py`  
+Processes downloaded JP2 files using Google Cloud Vision API (with Tesseract fallback).
 
-Features:
-- Dual-engine OCR with Google Cloud Vision primary, Tesseract fallback
-- Image preprocessing including binarization, contrast enhancement, and deskewing
-- Configurable via YAML files
-- Checkpointing for long-running jobs
-
-### Verification
-`verify_ocr.py` - Validates OCR output and identifies missing or failed files.
-
-```
-python scripts/ocr/verify_ocr.py --input-dir ./processed --jp2-dir ./downloads
+```bash
+python scripts/ocr handling/newspaper_ocr_run.py --config scripts/ocr handling/config_enhanced.yml
 ```
 
-### Organization
-`organize_ocr.py` - Organizes OCR output into structured directories by date or page.
+✅ Features:
+- Dual-engine OCR: Vision API + fallback to Tesseract
+- Preprocessing: binarization, contrast enhancement, deskewing
+- YAML-configurable pipeline behavior
+- Supports checkpointing & batch job control
 
-```
-python scripts/ocr/organize_ocr.py --input-dir ./raw_ocr --output-dir ./organized --mode date
+---
+
+### 🔍 Verification  
+**File:** `newspaper_ocr_verif.py`  
+Validates OCR output and identifies missing or failed files.
+
+```bash
+python scripts/ocr handling/newspaper_ocr_verif.py --input-dir ./processed --jp2-dir ./downloads
 ```
 
-## Installation
+✅ Outputs:
+- Missing page reports
+- Percent complete checks
+- Coverage summaries
+
+---
+
+### 📁 Organization  
+**File:** `newspaper_ocr_organize.py`  
+Organizes OCR outputs into structured folders based on issue date or page number.
+
+```bash
+python scripts/ocr handling/newspaper_ocr_organize.py --input-dir ./raw_ocr --output-dir ./organized --mode date
+```
+
+✅ Modes:
+- `date` — organizes by publication date
+- `page` — groups by page filename or sequence
+
+---
+
+## ⚙️ Installation
 
 1. Install required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-2. Set up Google Cloud Vision API credentials (if using Vision API):
-   ```
-   export GOOGLE_APPLICATION_CREDENTIALS="/path/to/credentials.json"
-   ```
+2. Set up Google Cloud Vision API credentials (if using):
+```bash
+# Windows
+set GOOGLE_APPLICATION_CREDENTIALS=path\to\credentials.json
 
-## Configuration
+# Mac/Linux
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
+```
 
-See `config_example.yml` for configuration options.
+---
+
+## ⚙️ Configuration
+
+Edit or duplicate `scripts/ocr handling/config_enhanced.yml` to configure:
+- Input/output paths
+- OCR engine selection & retries
+- Preprocessing options (CLAHE, binarization, deskew)
+- Logging & debug flags
+
+---
+
+© 2025 [PapaKaffey](https://github.com/PapaKaffey) — MIT License
