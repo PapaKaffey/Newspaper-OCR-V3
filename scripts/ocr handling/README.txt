@@ -4,9 +4,9 @@
 **File:** `newspaper_ocr_download_jp2.py`  
 Downloads JP2/TIFF image files from newspaper archives.
 
-```bash
+
 python scripts/ocr handling/newspaper_ocr_download_jp2.py ./downloads https://example.com/batch/url/
-```
+
 
 ✅ Features:
 - Multi-threaded downloading for efficient retrieval
@@ -20,9 +20,9 @@ python scripts/ocr handling/newspaper_ocr_download_jp2.py ./downloads https://ex
 **File:** `newspaper_ocr_run.py`  
 Processes downloaded JP2 files using Google Cloud Vision API (with Tesseract fallback).
 
-```bash
+
 python scripts/ocr handling/newspaper_ocr_run.py --config scripts/ocr handling/config_enhanced.yml
-```
+
 
 ✅ Features:
 - Dual-engine OCR: Vision API + fallback to Tesseract
@@ -36,9 +36,9 @@ python scripts/ocr handling/newspaper_ocr_run.py --config scripts/ocr handling/c
 **File:** `newspaper_ocr_verif.py`  
 Validates OCR output and identifies missing or failed files.
 
-```bash
+
 python scripts/ocr handling/newspaper_ocr_verif.py --input-dir ./processed --jp2-dir ./downloads
-```
+
 
 ✅ Outputs:
 - Missing page reports
@@ -51,9 +51,9 @@ python scripts/ocr handling/newspaper_ocr_verif.py --input-dir ./processed --jp2
 **File:** `newspaper_ocr_organize.py`  
 Organizes OCR outputs into structured folders based on issue date or page number.
 
-```bash
+
 python scripts/ocr handling/newspaper_ocr_organize.py --input-dir ./raw_ocr --output-dir ./organized --mode date
-```
+
 
 ✅ Modes:
 - `date` — organizes by publication date
@@ -64,18 +64,18 @@ python scripts/ocr handling/newspaper_ocr_organize.py --input-dir ./raw_ocr --ou
 ## ⚙️ Installation
 
 1. Install required dependencies:
-```bash
+
 pip install -r requirements.txt
-```
+
 
 2. Set up Google Cloud Vision API credentials (if using):
-```bash
+
 # Windows
 set GOOGLE_APPLICATION_CREDENTIALS=path\to\credentials.json
 
 # Mac/Linux
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
-```
+
 
 ---
 
